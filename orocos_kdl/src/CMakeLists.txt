@@ -52,12 +52,12 @@ ENDIF()
 
 ADD_LIBRARY(orocos-kdl ${LIB_TYPE} ${KDL_SRCS})
 
-for (var ${KDL_HPPS})
+foreach (var ${KDL_HPPS})
     file(RELATIVE_PATH rel ${CMAKE_CURRENT_SOURCE_DIR} ${var})
     get_filename_component(directory ${rel} DIRECTORY)
     make_directory(${CMAKE_CURRENT_BINARY_DIR}/public_include/kdl/${directory})
     file(CREATE_LINK ${var} ${CMAKE_CURRENT_BINARY_DIR}/public_include/kdl/${rel} SYMBOLIC)
-endfor()
+endforeach()
 file(CREATE_LINK ${CMAKE_CURRENT_BINARY_DIR}/config.h ${CMAKE_CURRENT_BINARY_DIR}/public_include/kdl/config.h SYMBOLIC)
 
 TARGET_INCLUDE_DIRECTORIES(orocos-kdl PUBLIC
