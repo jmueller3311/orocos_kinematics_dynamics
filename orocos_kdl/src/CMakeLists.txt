@@ -52,9 +52,17 @@ ENDIF()
 
 ADD_LIBRARY(orocos-kdl ${LIB_TYPE} ${KDL_SRCS})
 
+for (var ${KDL_HPPS})
+    file(RELATIVE_PATH rel ${CMAKE_CURRENT_SOURCE_DIR} ${var})
+    get_filename_component(directory ${rel} DIRECTORY)
+    make_directory(${CMAKE_CURRENT_BINARY_DIR}/public_include/kdl/${directory})
+    file(CREATE_LINK ${var} ${CMAKE_CURRENT_BINARY_DIR}/public_include/kdl/${rel} SYMBOLIC)
+endfor()
+file(CREATE_LINK ${CMAKE_CURRENT_BINARY_DIR}/config.h ${CMAKE_CURRENT_BINARY_DIR}/public_include/kdl/config.h SYMBOLIC)
+
 TARGET_INCLUDE_DIRECTORIES(orocos-kdl PUBLIC
   "$<INSTALL_INTERFACE:include>"
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+  PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/public_include)
 
 SET_TARGET_PROPERTIES( orocos-kdl PROPERTIES
   SOVERSION "${KDL_VERSION_MAJOR}.${KDL_VERSION_MINOR}"
